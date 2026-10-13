@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Build outputs
+frontend/dist/
+frontend/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Uploads except .gitkeep and demo sample
+backend/uploads/resumes/*
+!backend/uploads/resumes/.gitkeep
+!backend/uploads/resumes/alex-rivera-resume.pdf
+backend/uploads/logos/*
+!backend/uploads/logos/.gitkeep

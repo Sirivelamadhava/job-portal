@@ -1,0 +1,15 @@
+{
+  "name": "full-stack-job-portal-application",
+  "version": "1.0.0",
+  "description": "Full Stack MERN Job Portal Web Application",
+  "scripts": {
+    "backend": "npm run dev --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "dev": "npm run backend",
+    "start": "npm start --prefix backend",
+    "build:frontend": "npm run build --prefix frontend"
+  },
+  "keywords": ["mern", "job-portal"],
+  "author": "",
+  "license": "ISC"
+}
