@@ -8,7 +8,9 @@ import {
   Eye, 
   EyeOff, 
   AlertCircle, 
-  Loader2 
+  Loader2,
+  UserCheck,
+  Building 
 } from 'lucide-react';
 
 const Login = () => {
@@ -16,6 +18,7 @@ const Login = () => {
   const location = useLocation();
   const { login } = useAuth();
 
+  const [role, setRole] = useState('job_seeker'); // 'job_seeker' | 'recruiter'
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -48,11 +51,17 @@ const Login = () => {
     setLoading(false);
 
     if (res.success) {
-      // Direct user based on role or original destination
       if (from !== '/') {
         navigate(from, { replace: true });
       } else {
-        navigate('/', { replace: true });
+        const userRole = res.data?.user?.role;
+        if (userRole === 'admin') {
+          navigate('/admin', { replace: true });
+        } else if (userRole === 'recruiter') {
+          navigate('/recruiter', { replace: true });
+        } else {
+          navigate('/dashboard', { replace: true });
+        }
       }
     } else {
       setError(res.error);
@@ -80,6 +89,34 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="card-premium bg-white py-8 px-4 sm:px-10 shadow-lg border border-slate-200/80 rounded-2xl">
+          {/* Role Switcher Tabs (Matching Register page) */}
+          <div className="mb-6 p-1 bg-slate-100 rounded-xl grid grid-cols-2 gap-1 border border-slate-200">
+            <button
+              type="button"
+              onClick={() => { setRole('job_seeker'); setError(''); }}
+              className={`py-2.5 text-xs font-bold rounded-lg flex items-center justify-center space-x-2 transition-all ${
+                role === 'job_seeker'
+                  ? 'bg-white text-indigo-700 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <UserCheck className="w-4 h-4" />
+              <span>Job Seeker</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setRole('recruiter'); setError(''); }}
+              className={`py-2.5 text-xs font-bold rounded-lg flex items-center justify-center space-x-2 transition-all ${
+                role === 'recruiter'
+                  ? 'bg-white text-indigo-700 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Building className="w-4 h-4" />
+              <span>Recruiter / Employer</span>
+            </button>
+          </div>
+
           {error && (
             <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start space-x-2.5 text-rose-800 text-xs animate-shake">
               <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
@@ -102,7 +139,7 @@ const Login = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="you@example.com"
+                  placeholder={role === 'recruiter' ? 'recruiter@company.com' : 'you@example.com'}
                   className="block w-full pl-10 pr-3.5 py-2.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                 />
               </div>
@@ -149,7 +186,7 @@ const Login = () => {
                     <span>Signing in...</span>
                   </>
                 ) : (
-                  <span>Sign in</span>
+                  <span>Sign in as {role === 'recruiter' ? 'Recruiter' : 'Job Seeker'}</span>
                 )}
               </button>
             </div>
