@@ -8,10 +8,7 @@ import {
   Eye, 
   EyeOff, 
   AlertCircle, 
-  Loader2, 
-  Sparkles, 
-  ShieldCheck, 
-  UserCheck 
+  Loader2 
 } from 'lucide-react';
 
 const Login = () => {
@@ -60,11 +57,6 @@ const Login = () => {
     } else {
       setError(res.error);
     }
-  };
-
-  const fillDemoCredentials = (email, password) => {
-    setFormData({ email, password });
-    setError('');
   };
 
   return (
@@ -162,53 +154,6 @@ const Login = () => {
               </button>
             </div>
           </form>
-
-          {/* Quick Demo Fill Section */}
-          <div className="mt-8 pt-6 border-t border-slate-100">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center space-x-1">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span>One-Click Demo Accounts</span>
-              </span>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('seeker@example.com', 'Password@123')}
-                className="p-2 text-left rounded-lg border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all group"
-              >
-                <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-800 group-hover:text-indigo-600">
-                  <UserCheck className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Seeker</span>
-                </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5">seeker@...</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('recruiter@techcorp.com', 'Password@123')}
-                className="p-2 text-left rounded-lg border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 transition-all group"
-              >
-                <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-800 group-hover:text-indigo-600">
-                  <Briefcase className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Recruiter</span>
-                </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5">recruiter@...</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => fillDemoCredentials('admin@careersphere.com', 'Admin@123456')}
-                className="p-2 text-left rounded-lg border border-slate-200 hover:border-purple-400 hover:bg-purple-50/50 transition-all group"
-              >
-                <div className="flex items-center space-x-1.5 text-xs font-semibold text-slate-800 group-hover:text-purple-600">
-                  <ShieldCheck className="w-3.5 h-3.5 text-purple-500" />
-                  <span>Admin</span>
-                </div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5">admin@...</div>
-              </button>
-            </div>
-          </div>
 
           <div className="mt-6 text-center text-xs text-slate-500">
             Don't have an account?{' '}
