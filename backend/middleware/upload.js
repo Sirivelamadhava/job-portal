@@ -3,12 +3,21 @@ const path = require('path');
 const fs = require('fs');
 const ApiError = require('../utils/apiError');
 
-// Ensure upload directories exist
-const logosDir = path.join(__dirname, '../uploads/logos');
-const resumesDir = path.join(__dirname, '../uploads/resumes');
+const os = require('os');
 
-if (!fs.existsSync(logosDir)) fs.mkdirSync(logosDir, { recursive: true });
-if (!fs.existsSync(resumesDir)) fs.mkdirSync(resumesDir, { recursive: true });
+// In serverless environments (Vercel/AWS), use ephemeral os.tmpdir() to avoid read-only filesystem crash
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const baseUploadDir = isServerless ? path.join(os.tmpdir(), 'uploads') : path.join(__dirname, '../uploads');
+
+const logosDir = path.join(baseUploadDir, 'logos');
+const resumesDir = path.join(baseUploadDir, 'resumes');
+
+try {
+  if (!fs.existsSync(logosDir)) fs.mkdirSync(logosDir, { recursive: true });
+  if (!fs.existsSync(resumesDir)) fs.mkdirSync(resumesDir, { recursive: true });
+} catch (err) {
+  console.warn('[Uploads] Directory initialization warning:', err.message);
+}
 
 // Storage config for company logos
 const logoStorage = multer.diskStorage({

@@ -8,6 +8,8 @@ const {
   getAllRecruiters,
   updateRecruiterStatus,
   getPlatformStats,
+  getSyncStatus,
+  triggerManualSync,
 } = require('../controllers/adminController');
 
 const { protect } = require('../middleware/auth');
@@ -28,4 +30,9 @@ router.patch('/recruiters/:id/status', updateRecruiterStatus);
 // Platform Overview Telemetry
 router.get('/stats', getPlatformStats);
 
+// Fresher IT Job Aggregator Synchronization & Telemetry
+router.get('/sync-status', getSyncStatus);
+router.post('/sync-now', triggerManualSync);
+
 module.exports = router;
+

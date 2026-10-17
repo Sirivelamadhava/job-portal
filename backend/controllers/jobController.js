@@ -2,133 +2,42 @@ const Job = require('../models/Job');
 const Company = require('../models/Company');
 const ApiResponse = require('../utils/apiResponse');
 const ApiError = require('../utils/apiError');
+const jobAggregationService = require('../services/jobAggregationService');
 
 /**
- * @desc    Get public jobs with search, multi-attribute filtering & pagination
+ * @desc    Get aggregated public jobs (internal MongoDB + authorized external feeds) with search, filters & pagination
  * @route   GET /api/jobs
  * @access  Public
  */
 const getPublicJobs = async (req, res, next) => {
   try {
-    const {
-      search,
-      location,
-      workplaceType,
-      employmentType,
-      experienceLevel,
-      minSalary,
-      skills,
-      sort = 'newest',
-      page = 1,
-      limit = 9,
-    } = req.query;
-
-    const query = {
-      status: 'approved',
-      deadline: { $gte: new Date() }, // Only open, unexpired jobs
-    };
-
-    // Keyword search (title, companyName, skills, description)
-    if (search && search.trim()) {
-      const searchRegex = new RegExp(search.trim(), 'i');
-      query.$or = [
-        { title: searchRegex },
-        { companyName: searchRegex },
-        { skills: { $in: [searchRegex] } },
-        { location: searchRegex },
-        { description: searchRegex },
-      ];
-    }
-
-    // Location filter
-    if (location && location.trim()) {
-      query.location = new RegExp(location.trim(), 'i');
-    }
-
-    // Workplace type filter (remote, hybrid, on-site)
-    if (workplaceType) {
-      const types = Array.isArray(workplaceType)
-        ? workplaceType
-        : workplaceType.split(',').map((t) => t.trim());
-      query.workplaceType = { $in: types };
-    }
-
-    // Employment type filter (full-time, part-time, contract, internship)
-    if (employmentType) {
-      const types = Array.isArray(employmentType)
-        ? employmentType
-        : employmentType.split(',').map((t) => t.trim());
-      query.employmentType = { $in: types };
-    }
-
-    // Experience level filter (entry, mid, senior, lead, executive)
-    if (experienceLevel) {
-      const levels = Array.isArray(experienceLevel)
-        ? experienceLevel
-        : experienceLevel.split(',').map((l) => l.trim());
-      query.experienceLevel = { $in: levels };
-    }
-
-    // Minimum Salary filter (matches jobs where maximum or minimum salary meets or exceeds)
-    if (minSalary && !isNaN(Number(minSalary))) {
-      const salaryNum = Number(minSalary);
-      query.$and = query.$and || [];
-      query.$and.push({
-        $or: [
-          { salaryMax: { $gte: salaryNum } },
-          { salaryMin: { $gte: salaryNum } },
-        ],
-      });
-    }
-
-    // Specific Skills filter
-    if (skills) {
-      const skillList = Array.isArray(skills)
-        ? skills
-        : skills.split(',').map((s) => new RegExp(s.trim(), 'i'));
-      query.skills = { $in: skillList };
-    }
-
-    // Sorting options
-    let sortOption = { createdAt: -1 };
-    if (sort === 'salary_high') {
-      sortOption = { salaryMax: -1, salaryMin: -1 };
-    } else if (sort === 'salary_low') {
-      sortOption = { salaryMin: 1 };
-    } else if (sort === 'popular') {
-      sortOption = { viewsCount: -1, createdAt: -1 };
-    } else if (sort === 'deadline') {
-      sortOption = { deadline: 1 };
-    }
-
-    const pageNum = Math.max(1, parseInt(page, 10) || 1);
-    const limitNum = Math.max(1, Math.min(50, parseInt(limit, 10) || 9));
-    const skip = (pageNum - 1) * limitNum;
-
-    const [total, jobs] = await Promise.all([
-      Job.countDocuments(query),
-      Job.find(query)
-        .populate('company', 'companyName logo website location industry companySize')
-        .sort(sortOption)
-        .skip(skip)
-        .limit(limitNum)
-        .lean(),
-    ]);
-
-    const totalPages = Math.ceil(total / limitNum) || 1;
+    const result = await jobAggregationService.getAggregatedJobs(req.query);
 
     return ApiResponse.paginated(
       res,
       'Jobs retrieved successfully',
-      jobs,
+      result.jobs,
       {
-        total,
-        page: pageNum,
-        limit: limitNum,
-        totalPages,
-        hasMore: pageNum < totalPages,
+        ...result.pagination,
+        stats: result.stats,
       }
     );
+  } catch (error) {
+    next(error);
+  }
+};
+
+const providerRegistry = require('../providers/providerRegistry');
+
+/**
+ * @desc    Get configured and available aggregator providers
+ * @route   GET /api/jobs/providers
+ * @access  Public
+ */
+const getAggregatorProviders = async (req, res, next) => {
+  try {
+    const providers = providerRegistry.getAllProvidersInfo();
+    return ApiResponse.success(res, 'Providers retrieved successfully', providers);
   } catch (error) {
     next(error);
   }
@@ -157,13 +66,25 @@ const getFeaturedJobs = async (req, res, next) => {
 };
 
 /**
- * @desc    Get single job by ID with related jobs
+ * @desc    Get single job by ID with related jobs (supports internal & external jobs)
  * @route   GET /api/jobs/:id
  * @access  Public
  */
 const getJobById = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    // Check if external job identifier (e.g. ext_arbeitnow_... or ext_remotive_...)
+    if (id && id.startsWith('ext_')) {
+      const extJob = await jobAggregationService.getJobById(id);
+      if (extJob) {
+        return ApiResponse.success(res, 'External job details retrieved successfully', {
+          job: extJob,
+          similarJobs: [],
+        });
+      }
+      return next(ApiError.notFound('External job listing not found or expired.'));
+    }
 
     const job = await Job.findById(id)
       .populate('company', 'companyName logo website description location industry companySize')
@@ -520,6 +441,7 @@ const toggleJobStatus = async (req, res, next) => {
 
 module.exports = {
   getPublicJobs,
+  getAggregatorProviders,
   getFeaturedJobs,
   getJobById,
   getJobCategories,

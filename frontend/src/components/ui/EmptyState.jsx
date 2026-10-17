@@ -9,8 +9,8 @@ const EmptyState = ({
   onAction,
 }) => {
   return (
-    <div className="card-premium p-10 rounded-2xl bg-white border border-slate-200 text-center space-y-4 my-6">
-      <div className="w-14 h-14 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+    <div className="card-premium p-10 rounded-2xl bg-white border border-slate-200/90 text-center space-y-4 my-6">
+      <div className="w-14 h-14 mx-auto rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center">
         <Icon className="w-7 h-7" />
       </div>
       <div className="max-w-md mx-auto space-y-1.5">

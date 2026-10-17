@@ -121,7 +121,25 @@ const jobSchema = new mongoose.Schema(
       trim: true,
       default: '',
     },
+    sourcePlatform: {
+      type: String,
+      default: 'CareerSphere',
+    },
+    officialCareerSiteUrl: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    hasPPO: {
+      type: Boolean,
+      default: true,
+    },
+    minQualification: {
+      type: String,
+      default: 'B.Tech / B.E. / MCA (Student / Graduate)',
+    },
     status: {
+
       type: String,
       enum: ['draft', 'pending_approval', 'approved', 'rejected', 'closed'],
       default: 'pending_approval',

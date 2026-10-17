@@ -14,7 +14,7 @@ const AboutUs = () => {
           Democratizing Access to Meaningful Tech Careers
         </h1>
         <p className="text-base text-slate-600 leading-relaxed">
-          CareerSphere was founded on a simple principle: recruitment should be transparent, data-driven, and focused on genuine engineering capability.
+          FreshersCareer was founded on a simple principle: recruitment should be transparent, data-driven, and focused on genuine engineering capability for freshers and early career talent.
         </p>
       </section>
 
@@ -53,7 +53,7 @@ const AboutUs = () => {
 
       {/* Call to action */}
       <section className="p-10 rounded-3xl bg-slate-900 text-white text-center space-y-4 max-w-4xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Join the CareerSphere Community</h2>
+        <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Join the FreshersCareer Community</h2>
         <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto">
           Whether you're looking for your next challenge or building your dream engineering team, we're here to help.
         </p>

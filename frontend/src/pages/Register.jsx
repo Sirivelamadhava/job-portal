@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
-  Briefcase, 
+  GraduationCap, 
   Lock, 
   Mail, 
   User, 
@@ -88,18 +88,18 @@ const Register = () => {
     <div className="min-h-[85vh] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-2">
         <Link to="/" className="inline-flex items-center space-x-2.5">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-200">
-            <Briefcase className="w-5 h-5" />
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-emerald-200">
+            <GraduationCap className="w-5 h-5" />
           </div>
           <span className="text-2xl font-bold tracking-tight text-slate-900">
-            Career<span className="text-indigo-600">Sphere</span>
+            Freshers<span className="text-emerald-600">Career</span>
           </span>
         </Link>
         <h2 className="text-2xl font-bold tracking-tight text-slate-900">
           Create your account
         </h2>
         <p className="text-sm text-slate-500">
-          Join thousands of tech professionals and forward-thinking companies.
+          Join thousands of tech freshers and verified companies.
         </p>
       </div>
 
@@ -112,11 +112,11 @@ const Register = () => {
               onClick={() => { setRole('job_seeker'); setError(''); }}
               className={`py-2.5 text-xs font-bold rounded-lg flex items-center justify-center space-x-2 transition-all ${
                 role === 'job_seeker'
-                  ? 'bg-white text-indigo-700 shadow-sm'
+                  ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <UserCheck className="w-4 h-4" />
+              <UserCheck className="w-4 h-4 text-emerald-600" />
               <span>Job Seeker</span>
             </button>
             <button
@@ -124,11 +124,11 @@ const Register = () => {
               onClick={() => { setRole('recruiter'); setError(''); }}
               className={`py-2.5 text-xs font-bold rounded-lg flex items-center justify-center space-x-2 transition-all ${
                 role === 'recruiter'
-                  ? 'bg-white text-indigo-700 shadow-sm'
+                  ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <Building className="w-4 h-4" />
+              <Building className="w-4 h-4 text-emerald-600" />
               <span>Recruiter / Employer</span>
             </button>
           </div>
@@ -280,7 +280,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full btn-primary py-2.5 text-sm font-semibold shadow-md shadow-indigo-100 flex items-center justify-center space-x-2"
+                className="w-full btn-primary py-2.5 text-sm font-semibold shadow-md shadow-emerald-100 flex items-center justify-center space-x-2"
               >
                 {loading ? (
                   <>
@@ -296,7 +296,7 @@ const Register = () => {
 
           <div className="mt-6 text-center text-xs text-slate-500">
             Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-700 underline">
+            <Link to="/login" className="font-semibold text-emerald-600 hover:text-emerald-700 underline">
               Sign in
             </Link>
           </div>

@@ -28,7 +28,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Previous Page"
       >
         <ChevronLeft className="w-4 h-4" />
@@ -40,7 +40,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
             onClick={() => onPageChange(1)}
             className={`w-9 h-9 text-xs font-semibold rounded-lg border transition-colors ${
               page === 1
-                ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+                ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                 : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
             }`}
           >
@@ -56,7 +56,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
           onClick={() => onPageChange(p)}
           className={`w-9 h-9 text-xs font-semibold rounded-lg border transition-colors ${
             page === p
-              ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+              ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
               : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
           }`}
         >
@@ -73,7 +73,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
             onClick={() => onPageChange(totalPages)}
             className={`w-9 h-9 text-xs font-semibold rounded-lg border transition-colors ${
               page === totalPages
-                ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs'
+                ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                 : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
             }`}
           >
@@ -85,7 +85,7 @@ const Pagination = ({ page, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
-        className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Next Page"
       >
         <ChevronRight className="w-4 h-4" />

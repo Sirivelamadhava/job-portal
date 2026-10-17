@@ -73,17 +73,17 @@ const Home = () => {
     <div className="space-y-20 py-8">
       {/* 1. Hero Section */}
       <section className="relative text-center max-w-4xl mx-auto space-y-6 pt-4 pb-2">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold shadow-xs">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-          <span>Connecting world-class tech talent with top employers</span>
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold shadow-xs">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <span>Real-Time 0-Years Work Experience IT Job Aggregator</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-tight">
-          Discover Your Next High-Impact <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">Career Opportunity</span>
+          Find Your First IT Job — <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">All in One Place</span>
         </h1>
 
         <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Search thousands of verified jobs across engineering, artificial intelligence, product design, and cloud infrastructure.
+          Discover entry-level IT jobs and fresher opportunities from multiple job platforms.
         </p>
 
         {/* Hero Search Bar */}
@@ -93,12 +93,12 @@ const Home = () => {
 
         {/* Popular Tags */}
         <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-xs text-slate-500">
-          <span className="font-semibold text-slate-700">Popular Searches:</span>
-          {['Remote React', 'Staff Machine Learning', 'Kubernetes DevOps', 'Product Designer', 'Full Stack'].map((tag, idx) => (
+          <span className="font-semibold text-slate-700">Popular Fresher Searches:</span>
+          {['Software Developer Fresher', 'Junior React.js', 'Associate Software Engineer', 'Graduate Trainee (GET)', 'QA Tester Fresher', 'Python Developer Fresher'].map((tag, idx) => (
             <button
               key={idx}
               onClick={() => handleHeroSearch({ search: tag, location: '' })}
-              className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-colors shadow-2xs"
+              className="px-2.5 py-1 rounded-full bg-white border border-slate-200 hover:border-indigo-400 hover:text-indigo-600 transition-colors shadow-2xs font-medium"
             >
               {tag}
             </button>
@@ -210,7 +210,7 @@ const Home = () => {
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">Streamlined Hiring Workflow</span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            How CareerSphere Works
+            How FreshersCareer Works
           </h2>
           <p className="text-xs sm:text-sm text-slate-500">
             A transparent and efficient path for candidates and hiring managers alike.

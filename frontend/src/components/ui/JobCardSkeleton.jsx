@@ -2,7 +2,7 @@ import React from 'react';
 
 const JobCardSkeleton = () => {
   return (
-    <div className="card-premium p-6 rounded-2xl bg-white border border-slate-200 animate-pulse space-y-4">
+    <div className="card-premium p-6 rounded-2xl bg-white border border-slate-200/90 animate-pulse space-y-4">
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-3.5">
           <div className="w-12 h-12 rounded-xl bg-slate-200"></div>

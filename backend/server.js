@@ -87,24 +87,44 @@ app.get('/api/health', (req, res) => {
   const mongoose = require('mongoose');
   const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
   
-  return ApiResponse.success(res, 'CareerSphere API is healthy and operational', {
+  return ApiResponse.success(res, 'FreshersCareer API is healthy and operational', {
     status: 'ok',
     uptime: `${Math.floor(process.uptime())}s`,
     database: dbStatus,
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
-    version: '1.0.0',
+    version: '2.0.0',
+    platform: 'FreshersCareer',
   });
+});
+
+// Vercel Cron Endpoint for 6:00 AM IST Daily Fresher Job Discovery
+app.get('/api/cron/daily-sync', async (req, res, next) => {
+  try {
+    const cronSecret = process.env.CRON_SECRET;
+    const authHeader = req.headers.authorization;
+    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+      return res.status(401).json({ success: false, message: 'Unauthorized cron invocation' });
+    }
+
+    const jobSyncService = require('./services/jobSyncService');
+    const result = await jobSyncService.runSync({ triggerType: 'scheduled_cron' });
+    return ApiResponse.success(res, 'Daily Fresher Job Sync completed via Vercel Cron', result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // Mount API Routes
 const authRoutes = require('./routes/authRoutes');
+const aggregatedJobsRoutes = require('./routes/aggregatedJobsRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 
 app.use('/api/auth', authRoutes);
+app.use('/api/jobs/aggregated', aggregatedJobsRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/admin', adminRoutes);
@@ -119,11 +139,16 @@ app.use('*', (req, res, next) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
+const dailySyncScheduler = require('./jobs/dailySyncScheduler');
 
-if (process.env.NODE_ENV !== 'test') {
+// Only start standalone HTTP server in non-serverless environments
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   app.listen(PORT, () => {
-    console.log(`[Server] CareerSphere Backend running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+    console.log(`[Server] FreshersCareer Backend running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+    // Initialize 6:00 AM IST Automatic Fresher Job Discovery Scheduler (for standalone environments)
+    dailySyncScheduler.init();
   });
 }
 
 module.exports = app;
+

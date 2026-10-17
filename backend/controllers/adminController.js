@@ -204,6 +204,40 @@ const getPlatformStats = async (req, res, next) => {
   }
 };
 
+/**
+ * @desc    Get Fresher Job synchronization telemetry & status
+ * @route   GET /api/admin/sync-status
+ * @access  Private (Admin)
+ */
+const getSyncStatus = async (req, res, next) => {
+  try {
+    const jobSyncService = require('../services/jobSyncService');
+    const telemetry = await jobSyncService.getSyncTelemetry();
+    return ApiResponse.success(res, 'Job sync telemetry retrieved successfully', telemetry);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Manually trigger Fresher Job Discovery & Synchronization
+ * @route   POST /api/admin/sync-now
+ * @access  Private (Admin)
+ */
+const triggerManualSync = async (req, res, next) => {
+  try {
+    const jobSyncService = require('../services/jobSyncService');
+    const result = await jobSyncService.runSync({
+      triggerType: 'manual_admin',
+      userId: req.user._id,
+    });
+
+    return ApiResponse.success(res, 'Fresher job synchronization completed successfully', result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllAdminJobs,
   updateJobStatus,
@@ -211,4 +245,7 @@ module.exports = {
   getAllRecruiters,
   updateRecruiterStatus,
   getPlatformStats,
+  getSyncStatus,
+  triggerManualSync,
 };
+

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
-  Briefcase, 
+  GraduationCap, 
   Lock, 
   Mail, 
   Eye, 
@@ -72,11 +72,11 @@ const Login = () => {
     <div className="min-h-[85vh] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-2">
         <Link to="/" className="inline-flex items-center space-x-2.5">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-200">
-            <Briefcase className="w-5 h-5" />
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-emerald-200">
+            <GraduationCap className="w-5 h-5" />
           </div>
           <span className="text-2xl font-bold tracking-tight text-slate-900">
-            Career<span className="text-indigo-600">Sphere</span>
+            Freshers<span className="text-emerald-600">Career</span>
           </span>
         </Link>
         <h2 className="text-2xl font-bold tracking-tight text-slate-900">
@@ -96,11 +96,11 @@ const Login = () => {
               onClick={() => { setRole('job_seeker'); setError(''); }}
               className={`py-2.5 text-xs font-bold rounded-lg flex items-center justify-center space-x-2 transition-all ${
                 role === 'job_seeker'
-                  ? 'bg-white text-indigo-700 shadow-sm'
+                  ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <UserCheck className="w-4 h-4" />
+              <UserCheck className="w-4 h-4 text-emerald-600" />
               <span>Job Seeker</span>
             </button>
             <button
@@ -108,11 +108,11 @@ const Login = () => {
               onClick={() => { setRole('recruiter'); setError(''); }}
               className={`py-2.5 text-xs font-bold rounded-lg flex items-center justify-center space-x-2 transition-all ${
                 role === 'recruiter'
-                  ? 'bg-white text-indigo-700 shadow-sm'
+                  ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <Building className="w-4 h-4" />
+              <Building className="w-4 h-4 text-emerald-600" />
               <span>Recruiter / Employer</span>
             </button>
           </div>
@@ -140,7 +140,7 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder={role === 'recruiter' ? 'recruiter@company.com' : 'you@example.com'}
-                  className="block w-full pl-10 pr-3.5 py-2.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                  className="block w-full pl-10 pr-3.5 py-2.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                 />
               </div>
             </div>
@@ -162,7 +162,7 @@ const Login = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="block w-full pl-10 pr-10 py-2.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                  className="block w-full pl-10 pr-10 py-2.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                 />
                 <button
                   type="button"
@@ -178,7 +178,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full btn-primary py-2.5 text-sm font-semibold shadow-md shadow-indigo-100 flex items-center justify-center space-x-2"
+                className="w-full btn-primary py-2.5 text-sm font-semibold shadow-md shadow-emerald-100 flex items-center justify-center space-x-2"
               >
                 {loading ? (
                   <>
@@ -194,7 +194,7 @@ const Login = () => {
 
           <div className="mt-6 text-center text-xs text-slate-500">
             Don't have an account?{' '}
-            <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-700 underline">
+            <Link to="/register" className="font-semibold text-emerald-600 hover:text-emerald-700 underline">
               Create an account
             </Link>
           </div>

@@ -253,6 +253,49 @@ const JobDetails = () => {
               )}
             </div>
             <div className="space-y-1.5">
+              <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                {/* Source Badge */}
+                <Badge 
+                  variant={
+                    job.source === 'Naukri' ? 'cyan' :
+                    job.source === 'LinkedIn' ? 'purple' :
+                    job.source === 'Indeed' ? 'primary' :
+                    job.source === 'Internshala' ? 'warning' :
+                    job.source === 'Wellfound' ? 'danger' :
+                    job.source === 'Arbeitnow' ? 'cyan' : 
+                    job.source === 'Remotive' ? 'purple' : 
+                    job.source === 'FreshersCareer' || job.source === 'CareerSphere' ? 'primary' : 'neutral'
+                  } 
+                  size="xs"
+                  className="font-bold"
+                >
+                  Source: {job.source || 'FreshersCareer Direct'}
+                </Badge>
+
+                {/* Freshness Labels */}
+                {job.status === 'closed' || job.status === 'expired' ? (
+                  <span className="inline-flex items-center space-x-1 text-[10px] font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                    <span>Closed / Expired</span>
+                  </span>
+                ) : job.isNewToday ? (
+                  <span className="inline-flex items-center space-x-1 text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded-full">
+                    <span>⚡ New Today</span>
+                  </span>
+                ) : null}
+
+                {job.isRecentlyUpdated && job.status !== 'closed' && (
+                  <span className="inline-flex items-center space-x-1 text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full">
+                    <span>🔄 Recently Updated</span>
+                  </span>
+                )}
+
+                {/* Last Verified Timestamp */}
+                <span className="inline-flex items-center space-x-1 text-[10px] text-slate-500 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full">
+                  <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
+                  <span>Last Verified: {job.lastVerifiedAt ? new Date(job.lastVerifiedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : 'Today'}</span>
+                </span>
+              </div>
+
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 {job.title}
               </h1>
@@ -269,15 +312,56 @@ const JobDetails = () => {
                 <span>&bull;</span>
                 <span className="flex items-center space-x-1">
                   <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>Posted {new Date(job.createdAt).toLocaleDateString()}</span>
+                  <span>Posted {new Date(job.postedAt || job.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Action Button */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            {hasApplied ? (
+          {/* Action Button & Provider Notice */}
+          <div className="flex flex-col items-stretch sm:items-end gap-2">
+            {job.status === 'closed' || job.status === 'expired' ? (
+              <div className="space-y-1 text-right">
+                <button
+                  disabled
+                  className="py-3 px-8 text-sm font-bold rounded-2xl bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed w-full sm:w-auto"
+                >
+                  Application Closed or Expired
+                </button>
+                <p className="text-[11px] text-rose-500 max-w-xs">
+                  This vacancy is no longer accepting new applicants on the source platform.
+                </p>
+              </div>
+            ) : job.isExternal ? (
+              (job.originalUrl || job.externalUrl) ? (
+                <div className="space-y-2 text-right">
+                  <a
+                    href={job.originalUrl || job.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary py-3 px-8 text-sm font-bold shadow-md shadow-indigo-100 text-center inline-flex items-center justify-center space-x-2 w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700"
+                  >
+                    <span>Apply on {job.source || 'Original Portal'}</span>
+                    <ExternalLink className="w-4 h-4 ml-1" />
+                  </a>
+                  <p className="text-[11px] text-slate-500 max-w-xs leading-normal">
+                    You are applying through the original job provider. Application requirements and availability are controlled by that provider.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-1 text-right">
+                  <button
+                    disabled
+                    className="py-3 px-8 text-sm font-bold rounded-2xl bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed w-full sm:w-auto"
+                  >
+                    Application Link Unavailable
+                  </button>
+                  <p className="text-[11px] text-slate-500 max-w-xs">
+                    The external provider has not provided a direct listing URL.
+                  </p>
+                </div>
+              )
+            ) : hasApplied ? (
               <div className="flex items-center space-x-3">
                 <div className="px-4 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center space-x-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -301,6 +385,7 @@ const JobDetails = () => {
           </div>
         </div>
 
+
         {/* Quick Highlights Bar */}
         <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
@@ -308,17 +393,17 @@ const JobDetails = () => {
             <span className="text-xs font-bold text-slate-800 capitalize mt-0.5 block">{job.workplaceType}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-            <span className="text-[11px] text-slate-400 block font-medium">Employment</span>
-            <span className="text-xs font-bold text-slate-800 capitalize mt-0.5 block">{job.employmentType}</span>
+            <span className="text-[11px] text-slate-400 block font-medium">Opportunity Type</span>
+            <span className="text-xs font-bold text-slate-800 capitalize mt-0.5 block">{job.fresherCategoryLabel || job.employmentType}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-            <span className="text-[11px] text-slate-400 block font-medium">Experience Level</span>
-            <span className="text-xs font-bold text-slate-800 capitalize mt-0.5 block">{job.experienceLevel} Level</span>
+            <span className="text-[11px] text-slate-400 block font-medium">Experience Requirement</span>
+            <span className="text-xs font-bold text-emerald-700 mt-0.5 block">{job.experienceRequired || '0 Years (Fresher Eligible)'}</span>
           </div>
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-            <span className="text-[11px] text-slate-400 block font-medium">Compensation</span>
-            <span className="text-xs font-bold text-emerald-600 mt-0.5 block">
-              {formatSalary(job.salaryMin, job.salaryMax, job.currency)}
+            <span className="text-[11px] text-slate-400 block font-medium">Compensation / Stipend</span>
+            <span className="text-xs font-bold text-slate-900 mt-0.5 block">
+              {job.salary || formatSalary(job.salaryMin, job.salaryMax, job.currency)}
             </span>
           </div>
         </div>
@@ -389,8 +474,12 @@ const JobDetails = () => {
             <h3 className="text-sm font-bold text-slate-900">Job Summary</h3>
             <div className="space-y-3 text-xs text-slate-600">
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                <span className="text-slate-400">Listing Source:</span>
+                <span className="font-bold text-emerald-700">{job.source || 'FreshersCareer Direct'}</span>
+              </div>
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <span className="text-slate-400">Total Openings:</span>
-                <span className="font-bold text-slate-800">{job.openings}</span>
+                <span className="font-bold text-slate-800">{job.openings || 1}</span>
               </div>
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <span className="text-slate-400">Application Deadline:</span>
@@ -398,13 +487,20 @@ const JobDetails = () => {
               </div>
               <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                 <span className="text-slate-400">Application Method:</span>
-                <span className="font-bold text-indigo-600 capitalize">{job.applicationMethod} Portal</span>
+                <span className="font-bold text-indigo-600 capitalize">
+                  {job.isExternal ? 'External Redirect' : `${job.applicationMethod || 'platform'} Portal`}
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">Job Views:</span>
-                <span className="font-bold text-slate-800">{job.viewsCount} views</span>
+                <span className="font-bold text-slate-800">{job.viewsCount || 0} views</span>
               </div>
             </div>
+            {job.isExternal && (
+              <div className="mt-2 p-3 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600 leading-relaxed">
+                <span>Verified authorized feed from <strong>{job.source}</strong>. Applying redirects to the official partner application page.</span>
+              </div>
+            )}
           </div>
 
           {/* Company Profile Snapshot */}
@@ -471,7 +567,7 @@ const JobDetails = () => {
             </button>
 
             <div className="space-y-1">
-              <Badge variant="primary">CareerSphere Fast Apply</Badge>
+              <Badge variant="primary">FreshersCareer Fast Apply</Badge>
               <h2 className="text-xl font-bold text-slate-900">
                 Apply for {job.title}
               </h2>
@@ -509,7 +605,7 @@ const JobDetails = () => {
                       <span className="text-slate-700 font-medium">
                         {user?.resumeUrl
                           ? `Use saved profile resume (${user.resumeOriginalName || 'Resume.pdf'})`
-                          : 'Use CareerSphere standard demo resume (Alex_Rivera_CV.pdf)'}
+                          : 'Use FreshersCareer standard demo resume (Alex_Rivera_CV.pdf)'}
                       </span>
                     </label>
 

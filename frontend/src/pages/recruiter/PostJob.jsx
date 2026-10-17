@@ -371,7 +371,7 @@ const PostJob = () => {
                 onChange={handleChange}
                 className="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
-                <option value="platform">CareerSphere One-Click Portal</option>
+                <option value="platform">FreshersCareer One-Click Portal</option>
                 <option value="external">External Company Portal URL</option>
               </select>
             </div>

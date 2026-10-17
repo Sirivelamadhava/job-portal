@@ -385,6 +385,14 @@ const checkJobStatus = async (req, res, next) => {
   try {
     const { jobId } = req.params;
 
+    if (!jobId || jobId.startsWith('ext_')) {
+      return ApiResponse.success(res, 'Job status checked', {
+        isSaved: false,
+        hasApplied: false,
+        application: null,
+      });
+    }
+
     const [saved, application] = await Promise.all([
       SavedJob.findOne({ user: req.user._id, job: jobId }),
       Application.findOne({ applicant: req.user._id, job: jobId }),

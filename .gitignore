@@ -12,6 +12,7 @@ frontend/.env
 # Build outputs
 frontend/dist/
 frontend/build/
+.vercel/
 
 # Logs
 npm-debug.log*

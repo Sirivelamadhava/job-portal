@@ -14,22 +14,22 @@ const ContactUs = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-12 py-8">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Contact CareerSphere Support</h1>
+        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Contact FreshersCareer Support</h1>
         <p className="text-xs sm:text-sm text-slate-500">
-          Have an inquiry, feedback, or need enterprise recruitment onboarding? We'd love to hear from you.
+          Have an inquiry, feedback, or need recruitment onboarding? We'd love to hear from you.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Contact Info Card */}
-        <div className="card-premium p-6 sm:p-8 rounded-3xl bg-indigo-900 text-white space-y-6">
+        <div className="card-premium p-6 sm:p-8 rounded-3xl bg-slate-900 text-white space-y-6">
           <h3 className="text-lg font-bold">Contact Details</h3>
-          <div className="space-y-4 text-xs text-indigo-100">
+          <div className="space-y-4 text-xs text-slate-200">
             <div className="flex items-start space-x-3">
-              <Mail className="w-4 h-4 text-indigo-300 shrink-0 mt-0.5" />
+              <Mail className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
               <div>
                 <span className="block font-semibold text-white">Email Us</span>
-                <span>support@careersphere.com</span>
+                <span>support@fresherscareer.com</span>
               </div>
             </div>
             <div className="flex items-start space-x-3">

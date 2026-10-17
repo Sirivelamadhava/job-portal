@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getPublicJobs,
+  getAggregatorProviders,
   getFeaturedJobs,
   getJobById,
   getJobCategories,
@@ -18,6 +19,7 @@ const { authorize } = require('../middleware/role');
 
 // Public Job Search & Browsing Endpoints
 router.get('/', getPublicJobs);
+router.get('/providers', getAggregatorProviders);
 router.get('/featured', getFeaturedJobs);
 router.get('/categories', getJobCategories);
 router.get('/:id', getJobById);
